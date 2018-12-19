@@ -2278,6 +2278,8 @@ std::list<cuobjdumpSection*> pruneSectionList(std::list<cuobjdumpSection*> cuobj
 			delete *iter;
 		}
 	}
+
+	printf("cuobjdumpSectionList.size(): %d\n", cuobjdumpSectionList.size());
 	if(prunedList.empty()){
 		printf("Error: No PTX sections found with sm capability that is lower than current forced maximum capability \n minimum ptx capability found = %u, maximum forced ptx capability = %u \n User might want to change either the forced maximum capability from gpgpusim configuration or update the compilation to generate the required PTX version\n",min_ptx_capability_found,forced_max_capability);
 		abort();
