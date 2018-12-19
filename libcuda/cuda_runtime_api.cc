@@ -2042,7 +2042,7 @@ void extract_ptx_files_using_cuobjdump(){
             version_filename[version] = std::set<std::string>();
          }
          version_filename[version].insert(line);
-         printf("version: %d line:%s\n", version, line);
+         printf("version: %d line:%s\n", version, line.c_str());
     }
 
 }
