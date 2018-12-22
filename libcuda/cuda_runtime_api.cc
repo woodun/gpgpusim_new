@@ -2063,7 +2063,7 @@ static int get_app_cuda_version() {
         app_cuda_version = atoi(buf);
     }
     fclose(cmd);
-    app_cuda_version = 8000;//myedit
+    app_cuda_version = 8;//myedit
     if ( app_cuda_version == 0 ) {
         printf( "Error - Cannot detect the app's CUDA version.\n" );
         exit(1);
