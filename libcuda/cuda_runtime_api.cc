@@ -1990,10 +1990,12 @@ void extract_ptx_files_using_cuobjdump(){
 
     if (pytorch_bin!=NULL && strlen(pytorch_bin)!=0){
         app_binary = std::string(pytorch_bin);
+        printf("app_binary: %s\n", app_binary.c_str());
     }
 
     //only want file names
     snprintf(command,1000,"$CUDA_INSTALL_PATH/bin/cuobjdump -lptx %s  | cut -d \":\" -f 2 | awk '{$1=$1}1' > %s", app_binary.c_str(), ptx_list_file_name);
+    printf("command: %s\n",command);
     if( system(command) != 0 ) {
         printf("WARNING: Failed to execute cuobjdump to get list of ptx files \n");
         exit(0);
