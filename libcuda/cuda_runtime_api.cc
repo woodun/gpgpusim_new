@@ -2054,6 +2054,7 @@ static int get_app_cuda_version() {
     int fd=mkstemp(fname);
     close(fd);
     std::string app_cuda_version_command = "ldd " + get_app_binary() + " | grep libcudart.so | sed  's/.*libcudart.so.\\(.*\\) =>.*/\\1/' > " + fname;
+    printf("app_cuda_version_command: %s\n", app_cuda_version_command.c_str());
     system(app_cuda_version_command.c_str());
     FILE * cmd = fopen(fname, "r");
     char buf[256];
