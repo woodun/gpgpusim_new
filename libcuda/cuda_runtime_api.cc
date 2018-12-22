@@ -299,6 +299,7 @@ struct CUctx_st {
 	{
 		std::map<const void*,function_info*>::iterator i=m_kernel_lookup.find(hostFun);
 		assert( i != m_kernel_lookup.end() );
+		printf("i == m_kernel_lookup.end()?: %d", i == m_kernel_lookup.end());//myedit
 		return i->second;
 	}
 
@@ -1475,7 +1476,7 @@ __host__ cudaError_t CUDARTAPI cudaLaunchKernel ( const char* hostFun, dim3 grid
 	struct CUstream_st *s = (struct CUstream_st *)stream;
 	g_cuda_launch_stack.push_back( kernel_config(gridDim,blockDim,sharedMem,s) );
 
-	//printf("cudaLaunchKernel:sizeof(Arg[0])=%d)\n ",sizeof(args[0]));
+	printf("cudaLaunchKernel:sizeof(Arg[0])=%d)\n ",sizeof(args[0]));//myedit
 	kernel_config &config = g_cuda_launch_stack.back();
 	config.set_arg(args[0],432,0);//standard interface for cutlass library #TODO Implementing a generalized kernel
 
@@ -4764,8 +4765,9 @@ CUresult CUDAAPI cuLaunchKernel(CUfunction f,
     for(unsigned i = 0; i < entry->num_args(); i++){
         std::pair<size_t, unsigned> p = entry->get_param_config(i);
         cudaSetupArgument(kernelParams[i], p.first, p.second);
+        printf("entry->num_args(): %d\n", i);//myedit
     }
-    cudaLaunch(hostFun);
+    cudaLaunch(hostFun);//myedit: all functions pass through here.
 	return CUDA_SUCCESS;
 }
 #endif /* CUDART_VERSION >= 4000 */
