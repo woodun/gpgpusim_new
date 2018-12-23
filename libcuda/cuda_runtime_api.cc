@@ -293,13 +293,14 @@ struct CUctx_st {
 
     void register_hostFun_function( const char*hostFun, function_info* f){
         m_kernel_lookup[hostFun] = f;
+        printf("register_hostFun_function: hostFun: %p, f: %p\n", hostFun, f);
     }
 
 	function_info *get_kernel(const char *hostFun)
 	{
 		std::map<const void*,function_info*>::iterator i=m_kernel_lookup.find(hostFun);
 		assert( i != m_kernel_lookup.end() );
-		printf("i == m_kernel_lookup.end()?: %d", i == m_kernel_lookup.end());//myedit
+		printf("i == m_kernel_lookup.end()?: %d\n", i == m_kernel_lookup.end());//myedit
 		return i->second;
 	}
 
@@ -2066,7 +2067,7 @@ static int get_app_cuda_version() {
         app_cuda_version = atoi(buf);
     }
     fclose(cmd);
-    app_cuda_version = 8;//myedit
+    //app_cuda_version = 8;//myedit
     if ( app_cuda_version == 0 ) {
         printf( "Error - Cannot detect the app's CUDA version.\n" );
         exit(1);
@@ -2271,6 +2272,7 @@ std::list<cuobjdumpSection*> pruneSectionList(std::list<cuobjdumpSection*> cuobj
 			}
 		}
 	}
+	printf("min_ptx_capability_found: %d\n", min_ptx_capability_found);//myedit
 
 	//Throw away the sections with the lower capabilites and push those with the highest in
 	//the pruned list
@@ -2278,6 +2280,7 @@ std::list<cuobjdumpSection*> pruneSectionList(std::list<cuobjdumpSection*> cuobj
 			iter != cuobjdumpSectionList.end();
 			iter++){
 		unsigned capability = (*iter)->getArch();
+		printf("capability: %u, cuobjdumpSectionMap[(*iter)->getIdentifier()]: %u\n", capability, cuobjdumpSectionMap[(*iter)->getIdentifier()]);//myedit
 		if(capability == cuobjdumpSectionMap[(*iter)->getIdentifier()]){
 			prunedList.push_back(*iter);
 		} else {
@@ -4765,9 +4768,9 @@ CUresult CUDAAPI cuLaunchKernel(CUfunction f,
     for(unsigned i = 0; i < entry->num_args(); i++){
         std::pair<size_t, unsigned> p = entry->get_param_config(i);
         cudaSetupArgument(kernelParams[i], p.first, p.second);
-        printf("entry->num_args(): %d\n", i);//myedit
     }
-    cudaLaunch(hostFun);//myedit: all functions pass through here.
+    printf("entry->num_args(): %d\n", i);//myedit
+    cudaLaunch(hostFun);//myedit: all functions pass through here?
 	return CUDA_SUCCESS;
 }
 #endif /* CUDART_VERSION >= 4000 */
