@@ -352,10 +352,11 @@ struct _cuda_device_id *GPGPUSim_Init()
 {
 	static _cuda_device_id *the_device = NULL;
 	if( !the_device ) {
-		gpgpu_sim *the_gpu = gpgpu_ptx_sim_init_perf();
+		gpgpu_sim *the_gpu = gpgpu_ptx_sim_init_perf();//myedit: how is this only called once?
 
 		cudaDeviceProp *prop = (cudaDeviceProp *) calloc(sizeof(cudaDeviceProp),1);
 		snprintf(prop->name,256,"GPGPU-Sim_v%s", g_gpgpusim_version_string );
+		printf("prop->name: %s\n", prop->name);//myedit
 		prop->major = 5;
 		prop->minor = 2;
 		prop->totalGlobalMem = 0x80000000 /* 2 GB */;
@@ -406,6 +407,7 @@ static CUctx_st* GPGPUSim_Context()
 	static CUctx_st *the_context = NULL;
 	if( the_context == NULL ) {
 		_cuda_device_id *the_gpu = GPGPUSim_Init();
+		printf("GPGPUSim_Init() called in GPGPUSim_Context().\n");//myedit
 		the_context = new CUctx_st(the_gpu);
 	}
 	return the_context;
@@ -958,6 +960,7 @@ __host__ cudaError_t CUDARTAPI cudaGetDeviceCount(int *count)
 	    announce_call(__my_func__);
     }
 	_cuda_device_id *dev = GPGPUSim_Init();
+	printf("GPGPUSim_Init() called in cudaGetDeviceCount(int *count).\n");//myedit
 	*count = dev->num_devices();
 	return g_last_cudaError = cudaSuccess;
 }
@@ -968,6 +971,7 @@ __host__ cudaError_t CUDARTAPI cudaGetDeviceProperties(struct cudaDeviceProp *pr
 	    announce_call(__my_func__);
     }
 	_cuda_device_id *dev = GPGPUSim_Init();
+	printf("GPGPUSim_Init() called in cudaGetDeviceProperties(struct cudaDeviceProp *prop, int device).\n");//myedit
 	if (device <= dev->num_devices() )  {
 		*prop= *dev->get_prop();
 		return g_last_cudaError = cudaSuccess;
@@ -984,6 +988,7 @@ __host__ cudaError_t CUDARTAPI cudaDeviceGetAttribute(int *value, enum cudaDevic
     }
         const struct cudaDeviceProp *prop;
         _cuda_device_id *dev = GPGPUSim_Init();
+        printf("GPGPUSim_Init() called in cudaDeviceGetAttribute(int *value, enum cudaDeviceAttr attr, int device).\n");//myedit
         if (device <= dev->num_devices() )  {
                 prop = dev->get_prop();
                 switch (attr) {
@@ -1175,6 +1180,7 @@ __host__ cudaError_t CUDARTAPI cudaChooseDevice(int *device, const struct cudaDe
 	    announce_call(__my_func__);
     }
 	_cuda_device_id *dev = GPGPUSim_Init();
+	printf("GPGPUSim_Init() called in cudaChooseDevice(int *device, const struct cudaDeviceProp *prop).\n");//myedit
 	*device = dev->get_id();
 	return g_last_cudaError = cudaSuccess;
 }
@@ -1191,6 +1197,7 @@ __host__ cudaError_t CUDARTAPI cudaSetDevice(int device)
 	} else {
 		return g_last_cudaError = cudaErrorInvalidDevice;
 	}
+	printf("GPGPUSim_Init() called in cudaSetDevice(int device).\n");//myedit
 }
 
 __host__ cudaError_t CUDARTAPI cudaGetDevice(int *device)
@@ -3034,6 +3041,7 @@ cudaError_t CUDARTAPI cudaSetDeviceFlags( int flags )
 
 size_t getMaxThreadsPerBlock(struct cudaFuncAttributes *attr) {
   _cuda_device_id *dev = GPGPUSim_Init();
+  printf("GPGPUSim_Init() called in getMaxThreadsPerBlock(struct cudaFuncAttributes *attr).\n");//myedit
   struct cudaDeviceProp prop;
 
   prop = *dev->get_prop();
