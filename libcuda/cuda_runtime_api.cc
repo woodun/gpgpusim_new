@@ -4769,7 +4769,7 @@ CUresult CUDAAPI cuLaunchKernel(CUfunction f,
         std::pair<size_t, unsigned> p = entry->get_param_config(i);
         cudaSetupArgument(kernelParams[i], p.first, p.second);
     }
-    printf("entry->num_args(): %d\n", i);//myedit
+    printf("entry->num_args(): %u\n", entry->num_args());//myedit
     cudaLaunch(hostFun);//myedit: all functions pass through here?
 	return CUDA_SUCCESS;
 }
