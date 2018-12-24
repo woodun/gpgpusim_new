@@ -3311,7 +3311,7 @@ kernel_info_t *gpgpu_cuda_ptx_sim_init_grid( const char *hostFun,
 	kernel_info_t *result = new kernel_info_t(gridDim,blockDim,entry);
 	if( entry == NULL ) {
 		printf("GPGPU-Sim PTX: ERROR launching kernel -- no PTX implementation found for %p\n", hostFun);
-		//abort();//myedit
+		abort();
 	}
 	unsigned argcount=args.size();
 	unsigned argn=1;
